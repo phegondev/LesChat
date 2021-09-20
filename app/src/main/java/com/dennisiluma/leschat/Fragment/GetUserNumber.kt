@@ -11,10 +11,7 @@ import com.dennisiluma.leschat.UserModel
 import com.dennisiluma.leschat.databinding.FragmentGetUserNumberBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.*
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.TimeUnit
 
@@ -22,7 +19,7 @@ class GetUserNumber : Fragment() {
     private var number: String? = null
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private var code: String? = null
-    private var firebaseAuth: FirebaseAuth? = null
+    private lateinit var firebaseAuth: FirebaseAuth
     private var databaseReference: DatabaseReference? = null
 
     private var _binding: FragmentGetUserNumberBinding? = null
@@ -38,6 +35,7 @@ class GetUserNumber : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAuth = FirebaseAuth.getInstance();
         binding.btnGenerateOTP.setOnClickListener {
             if (checkNumber()) {
                 val phoneNumber = binding.countryCodePicker.selectedCountryCodeWithPlus + number
@@ -69,10 +67,10 @@ class GetUserNumber : Fragment() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 if (e is FirebaseAuthInvalidCredentialsException)
-                    Toast.makeText(context, "" + e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "" + e.message, Toast.LENGTH_LONG).show()
                 else if (e is FirebaseTooManyRequestsException)
-                    Toast.makeText(context, "" + e.message, Toast.LENGTH_SHORT).show()
-                else Toast.makeText(context, "" + e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "" + e.message, Toast.LENGTH_LONG).show()
+                else Toast.makeText(context, "" + e.message, Toast.LENGTH_LONG).show()
             }
 
             override fun onCodeSent(
@@ -92,6 +90,14 @@ class GetUserNumber : Fragment() {
 
 
     private fun sendCode(phoneNumber: String) {
+//        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
+//            .setPhoneNumber(phoneNumber)       // Phone number to verify
+//            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+//            .setActivity(requireActivity())                 // Activity (for callback binding)
+//            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
+//            .build()
+//        PhoneAuthProvider.verifyPhoneNumber(options)
+
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,
             60,
@@ -111,7 +117,6 @@ class GetUserNumber : Fragment() {
             return false
         } else return true
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "963884202862",
+    "project_id": "leschat-8e81e",
+    "storage_bucket": "leschat-8e81e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963884202862:android:666f334cbb824eca46df7f",
+        "android_client_info": {
+          "package_name": "com.dennisiluma.leschat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963884202862-q8umrfqe7hf4127rh46afkpf6uukehb6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCex3TVW3ZUKWsTpTFNz1sYnMDdMJ2SACA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963884202862-q8umrfqe7hf4127rh46afkpf6uukehb6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

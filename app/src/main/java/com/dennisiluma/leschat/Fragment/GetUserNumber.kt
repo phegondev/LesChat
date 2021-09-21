@@ -47,6 +47,7 @@ class GetUserNumber : Fragment() {
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+
 //                firebaseAuth!!.signInWithCredential(credential).addOnCompleteListener {
 //                    if (it.isSuccessful) {
 //                        val userModel =
@@ -90,32 +91,32 @@ class GetUserNumber : Fragment() {
 
 
     private fun sendCode(phoneNumber: String) {
-//        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
-//            .setPhoneNumber(phoneNumber)       // Phone number to verify
-//            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-//            .setActivity(requireActivity())                 // Activity (for callback binding)
-//            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
-//            .build()
-//        PhoneAuthProvider.verifyPhoneNumber(options)
+        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
+            .setPhoneNumber(phoneNumber)       // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(requireActivity())                 // Activity (for callback binding)
+            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
 
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-            phoneNumber,
-            60,
-            TimeUnit.SECONDS,
-            requireActivity(),
-            callbacks
-        )
+//        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+//            phoneNumber,
+//            60,
+//            TimeUnit.SECONDS,
+//            requireActivity(),
+//            callbacks
+//        )
     }
 
     private fun checkNumber(): Boolean {
         number = binding.edtNumber.text.toString().trim()
-        if (number!!.isEmpty()) {
+        return if (number!!.isEmpty()) {
             binding.edtNumber.error = "Field is required"
-            return false
+            false
         } else if (number!!.length < 10) {
             binding.edtNumber.error = "Number should be 10 in length"
-            return false
-        } else return true
+            false
+        } else true
     }
 
     override fun onDestroy() {

@@ -77,10 +77,10 @@ class VerifyNumber : Fragment() {
                     )
 
                 databaseReference!!.child(firebaseAuth?.uid!!).setValue(userModel)
-//                requireActivity().supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.main_container, GetUserData())
-//                    .commit()
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_container, GetUserData())
+                    .commit()
             }
         }
     }

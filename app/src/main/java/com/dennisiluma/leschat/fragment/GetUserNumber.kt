@@ -1,4 +1,4 @@
-package com.dennisiluma.leschat.Fragment
+package com.dennisiluma.leschat.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.dennisiluma.leschat.R
-import com.dennisiluma.leschat.UserModel
 import com.dennisiluma.leschat.databinding.FragmentGetUserNumberBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 class GetUserNumber : Fragment() {
     private var number: String? = null
-    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private lateinit var callbacksPhoneAuthProvider: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private var code: String? = null
     private lateinit var firebaseAuth: FirebaseAuth
     private var databaseReference: DatabaseReference? = null
@@ -44,7 +43,7 @@ class GetUserNumber : Fragment() {
             }
         }
 
-        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        callbacksPhoneAuthProvider = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
@@ -95,17 +94,9 @@ class GetUserNumber : Fragment() {
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
             .setActivity(requireActivity())                 // Activity (for callback binding)
-            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
+            .setCallbacks(callbacksPhoneAuthProvider)          // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
-
-//        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-//            phoneNumber,
-//            60,
-//            TimeUnit.SECONDS,
-//            requireActivity(),
-//            callbacks
-//        )
     }
 
     private fun checkNumber(): Boolean {

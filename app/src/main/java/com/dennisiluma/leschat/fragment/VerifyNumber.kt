@@ -1,5 +1,6 @@
-package com.dennisiluma.leschat.Fragment
+package com.dennisiluma.leschat.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -29,9 +30,7 @@ class VerifyNumber : Fragment() {
         /*Arguments coming from GetUserNumber*/
         arguments?.let {
             code = it.getString("Code")
-
         }
-
     }
 
     override fun onCreateView(
@@ -77,6 +76,7 @@ class VerifyNumber : Fragment() {
                     )
 
                 databaseReference!!.child(firebaseAuth?.uid!!).setValue(userModel)
+                saveInSharePreferencesForIncompleteRegistration()
                 requireActivity().supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.main_container, GetUserData())
@@ -84,6 +84,18 @@ class VerifyNumber : Fragment() {
             }
         }
     }
+
+    fun saveInSharePreferencesForIncompleteRegistration() {
+        val sharePreferences =
+            requireActivity().getSharedPreferences(
+                "registeredButNotFullyComplete",
+                Context.MODE_PRIVATE
+            )
+        val editor = sharePreferences.edit()
+        editor.putString("registeredButNotFullyComplete", "registeredButNotFullyComplete")
+        editor.apply()
+    }
+
 
     companion object {
 

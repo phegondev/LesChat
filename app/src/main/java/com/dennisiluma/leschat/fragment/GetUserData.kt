@@ -1,8 +1,10 @@
-package com.dennisiluma.leschat.Fragment
+package com.dennisiluma.leschat.fragment
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -13,8 +15,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.dennisiluma.leschat.Activity.DashBoard
-import com.dennisiluma.leschat.Constants.AppConstants
+import com.dennisiluma.leschat.activity.DashBoard
+import com.dennisiluma.leschat.constant.AppConstants
 import com.dennisiluma.leschat.databinding.FragmentGetUserDataBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -23,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-
 
 class GetUserData : Fragment() {
     private var image: Uri? = null
@@ -125,20 +126,34 @@ class GetUserData : Fragment() {
     private fun uploadData(name: String, status: String, image: Uri) = kotlin.run {
         storageReference!!.child(firebaseAuth!!.uid + AppConstants.PATH).putFile(image)
             .addOnSuccessListener {
-                val task = it.storage.downloadUrl
+                val task =
+                    it.storage.downloadUrl //download the url of the image present in the firebase image
                 task.addOnCompleteListener { uri ->
-                    imageUrl = uri.result.toString()
+                    imageUrl =
+                        uri.result.toString() //save the firebase image path to this variable which is stored in the database reference at line 134
                     val map = mapOf(
-                        "name" to name,
+                        "name" to name, //name node field as used in the real_time_database node to name_value that's being passed in
                         "status" to status,
                         "image" to imageUrl
                     )
                     databaseReference!!.child(firebaseAuth!!.uid!!).updateChildren(map)
-
-                    startActivity(Intent(context, DashBoard::class.java))
-                    requireActivity().finish()
+                        .addOnCompleteListener {
+                            shardPrefForSuccessfulProfileSetUp() // when the value is successfully logged in save to sharedprefer
+                            startActivity(Intent(context, DashBoard::class.java))
+                            requireActivity().finish()
+                        }
                 }
             }
+    }
+
+    fun shardPrefForSuccessfulProfileSetUp() {
+        val sharedPref = requireActivity().getSharedPreferences(
+            "registeredProfileSuccessfully",
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPref.edit()
+        editor.putString("registeredProfileSuccessfully", "registeredProfileSuccessfully")
+        editor.apply()
     }
 
 

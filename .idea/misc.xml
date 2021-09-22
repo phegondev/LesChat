@@ -4,13 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.22407407407407406" />
+        <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.2212962962962963" />
+        <entry key="app/src/main/res/drawable/ic_contact.xml" value="0.2212962962962963" />
+        <entry key="app/src/main/res/drawable/ic_info.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_splash_screen.xml" value="10.0" />
+        <entry key="app/src/main/res/layout/fragment_contact.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/fragment_get_user_data.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_get_user_number.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/fragment_verify_number.xml" value="0.1" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.2212962962962963" />
       </map>

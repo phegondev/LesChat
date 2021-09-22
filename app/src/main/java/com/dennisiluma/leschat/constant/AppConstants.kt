@@ -1,4 +1,4 @@
-package com.dennisiluma.leschat.Constants
+package com.dennisiluma.leschat.constant
 
 interface AppConstants {
 

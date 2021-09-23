@@ -18,14 +18,14 @@ class DashBoard : AppCompatActivity() {
         binding = ActivityDashBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.dashboardContainer, ChatFragment())
                 .commit()
             binding.bottomChip.setItemSelected(R.id.btnChat)
         }
         binding.bottomChip.setOnItemSelectedListener {
-            when(it){
+            when (it) {
                 R.id.btnChat -> {
                     fragment = ChatFragment()
                 }
@@ -34,14 +34,15 @@ class DashBoard : AppCompatActivity() {
                 }
                 R.id.btnContact -> fragment = ContactFragment()
             }
-        }
-        fragment.let {  //when fragment comtains something, then replace the fragment holder framelayout in the dashboard xml wit the curresponding fragment
-            if (it != null) {
+            fragment?.let {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.dashboardContainer,it)
+                    .replace(R.id.dashboardContainer, it)
                     .commit()
             }
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

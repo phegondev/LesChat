@@ -1,4 +1,9 @@
 package com.dennisiluma.leschat
+
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import de.hdodenhof.circleimageview.CircleImageView
+
 //
 //import androidx.databinding.BindingAdapter
 //import com.bumptech.glide.Glide
@@ -13,17 +18,16 @@ data class UserModel(
     val online: String = "offline",
     val typing: String = "false"
 ) {
+    companion object {
 
-//    companion object {
-//
-//        @JvmStatic
-//        @BindingAdapter("imageUrl")
-//        fun loadImage(view: CircleImageView, imageUrl: String?) {
-//            imageUrl?.let {
-//                Glide.with(view.context).load(imageUrl).into(view)
-//            }
-//        }
-//    }
+        @JvmStatic
+        @BindingAdapter("imageUrl")
+        fun loadImage(view: CircleImageView, imageUrl: String?) {
+            imageUrl?.let {
+                Glide.with(view.context).load(imageUrl).into(view)
+            }
+        }
+    }
 
 }
 

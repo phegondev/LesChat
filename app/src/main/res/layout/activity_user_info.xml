@@ -2,6 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="userModel"
             type="com.dennisiluma.leschat.model.UserModel" />
@@ -11,7 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="fragment.ProfileFragment">
+        tools:context=".activity.UserInfoActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,14 +40,7 @@
                         android:layout_height="100dp"
                         android:layout_gravity="center" />
 
-                    <ImageView
-                        android:id="@+id/imgPickImage"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_camera"
-                        app:layout_anchor="@id/imgProfile"
-                        app:layout_anchorGravity="end|center"
-                        app:tint="@color/colorAccent" />
+
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <TextView
@@ -76,15 +70,7 @@
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/imgEditStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_toRightOf="@+id/txtProfileStatus"
-                        android:src="@drawable/ic_edit" />
+
 
                 </RelativeLayout>
             </LinearLayout>
@@ -92,7 +78,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.2"
+                android:layout_weight="1.8"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
@@ -139,10 +125,7 @@
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_next" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -156,7 +139,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:layout_weight=".9"
+                                android:layout_weight="1"
                                 android:text="First Name"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="15dp"
@@ -168,7 +151,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
                                 android:layout_marginEnd="10dp"
-                                android:layout_weight="1.1"
+                                android:layout_weight="1"
                                 android:text="Last Name"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="15dp"
@@ -208,26 +191,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/deleteCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="Delete Account."
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>

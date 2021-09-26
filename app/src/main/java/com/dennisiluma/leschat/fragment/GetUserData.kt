@@ -75,18 +75,18 @@ class GetUserData : Fragment() {
             binding.edtUserStatus.error = "Filed is required"
             false
         } else if (image == null) {
-            Toast.makeText(context, "Image required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Image is required", Toast.LENGTH_SHORT).show()
             false
         } else true
     }
-
+        //TODO("Replace with isStorageOk in App Permission")
     private fun checkStoragePermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
     }
-
+    //TODO("Replace with requestStoragePermission in App Permission")
     private fun storageRequestPermission() = ActivityCompat.requestPermissions(
         requireActivity(),
         arrayOf(
@@ -109,6 +109,7 @@ class GetUserData : Fragment() {
         }
     }
 
+    //TODO(replace deprecated with latest methods)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -124,10 +125,10 @@ class GetUserData : Fragment() {
     }
 
     private fun uploadData(name: String, status: String, image: Uri) = kotlin.run {
-        storageReference!!.child(firebaseAuth!!.uid + AppConstants.PATH).putFile(image)
+        storageReference!!.child(firebaseAuth!!.uid + AppConstants.PATH).putFile(image)//save the image to firbase storage
             .addOnSuccessListener {
                 val task =
-                    it.storage.downloadUrl //download the url of the image present in the firebase image
+                    it.storage.downloadUrl //download the url of the image uploaded to the firebase image
                 task.addOnCompleteListener { uri ->
                     imageUrl =
                         uri.result.toString() //save the firebase image path to this variable which is stored in the database reference at line 134
@@ -138,7 +139,7 @@ class GetUserData : Fragment() {
                     )
                     databaseReference!!.child(firebaseAuth!!.uid!!).updateChildren(map)
                         .addOnCompleteListener {
-                            shardPrefForSuccessfulProfileSetUp() // when the value is successfully logged in save to sharedprefer
+                            shardPrefForSuccessfulProfileSetUp() // when the value is successfully logged in, save to getSharedPreferences
                             startActivity(Intent(context, DashBoard::class.java))
                             requireActivity().finish()
                         }

@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.dennisiluma.leschat.R
-import com.dennisiluma.leschat.UserModel
+import com.dennisiluma.leschat.model.UserModel
 import com.dennisiluma.leschat.databinding.FragmentVerifyNumberBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -48,8 +49,11 @@ class VerifyNumber : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
         binding.btnVerify.setOnClickListener {
             if (checkPin()) {
-                val credential = PhoneAuthProvider.getCredential(code!!, pin)
-                signInUser(credential)
+                if(code!! == pin){ // check weather to remove or not
+                    val credential = PhoneAuthProvider.getCredential(code!!, pin)
+                    signInUser(credential)
+                }
+                else Toast.makeText(context, "Your pin Doesn't match, Type in the correct values" , Toast.LENGTH_LONG).show()
             }
         }
     }

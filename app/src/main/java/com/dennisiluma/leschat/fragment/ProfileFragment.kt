@@ -32,6 +32,7 @@ import com.theartofdev.edmodo.cropper.CropImageView
 
 
 class ProfileFragment : Fragment() {
+
     private lateinit var profileBinding: FragmentProfileBinding
     private lateinit var profileViewModels: ProfileViewModel
     private lateinit var dialog: AlertDialog
@@ -77,7 +78,7 @@ class ProfileFragment : Fragment() {
             profileBinding.cardName.setOnClickListener {
                 val intent = Intent(context, EditNameActivity::class.java)
                 intent.putExtra("name", userModel.name)
-                startActivityForResult(intent, 100)
+                startActivityForResult(intent, 100) //TODO("Clean deprecated")
             }
         });
         profileBinding.imgEditStatus.setOnClickListener {
@@ -97,7 +98,7 @@ class ProfileFragment : Fragment() {
         /*here we are creating a custom alert dialog*/
         val alertDialog = AlertDialog.Builder(context)
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_layout, null, false)
-        alertDialog.setView(view)
+        alertDialog.setView(view) //help to replace the default dialog
 
         view.findViewById<Button>(R.id.btnEditStatus).setOnClickListener {
             val status = view.findViewById<EditText>(R.id.edtUserStatus).text.toString()
@@ -106,11 +107,12 @@ class ProfileFragment : Fragment() {
                 dialog.dismiss()
             }
         }
-        dialog = alertDialog.create()
+        dialog = alertDialog.create() //we are creating our custom dialog
         dialog.show()
 
 
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -126,6 +128,7 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
     private fun pickImage() {
         CropImage.activity().setCropShape(CropImageView.CropShape.OVAL)
             .start(requireContext(), this)
@@ -156,7 +159,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun uploadImage(imageUri: Uri) {
-
+        //TODO("move code and make network calls in repository)
         storageReference = FirebaseStorage.getInstance().reference
         storageReference.child(firebaseAuth.uid + AppConstants.PATH).putFile(imageUri)
             .addOnSuccessListener { taskSnapshot ->
@@ -166,7 +169,7 @@ class ProfileFragment : Fragment() {
                         val imagePath = it.result.toString()
 
                         val editor = sharedPreferences.edit()
-                        editor.putString("myImage", imagePath).apply()
+                        editor.putString("myImage", imagePath).apply() //this will be used in the message activity to display image of user in chat
 
                         profileViewModels.updateImage(imagePath)
                     }

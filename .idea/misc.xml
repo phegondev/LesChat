@@ -11,7 +11,10 @@
         <entry key="app/src/main/res/layout/activity_dash_board.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/layout/activity_edit_name.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_message.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_user_info.xml" value="0.2064814814814815" />
+        <entry key="app/src/main/res/layout/contact_item_layout.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/content_splash_screen.xml" value="10.0" />
         <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2064814814814815" />
@@ -20,6 +23,9 @@
         <entry key="app/src/main/res/layout/fragment_get_user_number.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/fragment_verify_number.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/left_item_layout.xml" value="0.18055555555555555" />
+        <entry key="app/src/main/res/layout/message_toolbar.xml" value="0.2064814814814815" />
+        <entry key="app/src/main/res/layout/right_item_layout.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.2212962962962963" />
       </map>
     </option>

@@ -25,4 +25,19 @@ class AppPermission {
             AppConstants.STORAGE_PERMISSION
         )
     }
+    fun isContactOk(context: Context): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_CONTACTS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestContactPermission(activity: Activity) {
+
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(Manifest.permission.READ_CONTACTS),
+            AppConstants.CONTACT_PERMISSION
+        )
+    }
 }

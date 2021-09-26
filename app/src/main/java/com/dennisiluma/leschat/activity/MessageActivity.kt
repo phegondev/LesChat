@@ -1,11 +1,15 @@
 package com.dennisiluma.leschat.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +17,12 @@ import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.dennisiluma.leschat.BR
+import com.dennisiluma.leschat.constant.AppConstants
 import com.dennisiluma.leschat.databinding.ActivityMessageBinding
 import com.dennisiluma.leschat.databinding.LeftItemLayoutBinding
 import com.dennisiluma.leschat.databinding.RightItemLayoutBinding
@@ -21,13 +30,18 @@ import com.dennisiluma.leschat.model.ChatListModel
 import com.dennisiluma.leschat.model.MessageModel
 import com.dennisiluma.leschat.model.UserModel
 import com.dennisiluma.leschat.permission.AppPermission
+import com.dennisiluma.leschat.services.SendMediaService
 import com.dennisiluma.leschat.util.AppUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.fxn.pix.Options
+import com.fxn.pix.Pix
+import com.fxn.utility.PermUtil
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.json.JSONObject
 
 class MessageActivity : AppCompatActivity() {
     private lateinit var activityMessageBinding: ActivityMessageBinding
@@ -82,6 +96,7 @@ class MessageActivity : AppCompatActivity() {
                 Toast.makeText(this, "Enter Message", Toast.LENGTH_SHORT).show()
             else {
                 sendMessage(message)
+                getToken(message)
             }
         }
 
@@ -110,6 +125,10 @@ class MessageActivity : AppCompatActivity() {
 
             }
         })
+
+        activityMessageBinding.btnDataSend.setOnClickListener {
+            pickImage()
+        }
 
     }
 
@@ -304,6 +323,141 @@ class MessageActivity : AppCompatActivity() {
             }
         })
     }
+
+        /**first generate a message token then send message by calling the sendNotification method*/
+    private fun getToken(message: String) {
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(hisId!!)
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val token = snapshot.child("token").value.toString()
+
+                    val to = JSONObject()
+                    val data = JSONObject()
+
+                    data.put("hisId", myId)
+                    data.put("hisImage", myImage)
+                    data.put("title", myName)
+                    data.put("message", message)
+                    data.put("chatId", chatId)
+
+                    to.put("to", token)
+                    to.put("data", data)
+                    sendNotification(to)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+
+    private fun sendNotification(to: JSONObject) {
+
+        val request: JsonObjectRequest = object : JsonObjectRequest(
+            Method.POST,
+            AppConstants.NOTIFICATION_URL,
+            to,
+            Response.Listener { response: JSONObject ->
+
+                Log.d("TAG", "onResponse: $response")
+            },
+            Response.ErrorListener {
+
+                Log.d("TAG", "onError: $it")
+            }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val map: MutableMap<String, String> = HashMap()
+
+                map["Authorization"] = "key=" + AppConstants.SERVER_KEY
+                map["Content-type"] = "application/json"
+                return map
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+
+        val requestQueue = Volley.newRequestQueue(this)
+        request.retryPolicy = DefaultRetryPolicy(
+            30000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+
+        requestQueue.add(request)
+
+    }
+
+    private fun pickImage() {
+
+        val options: Options = Options.init()
+            .setRequestCode(100)
+            .setCount(5)
+            .setFrontfacing(true)
+            .setSpanCount(4)
+            .setExcludeVideos(true)
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
+            .setPath("/les chat/Media/Sent")
+
+
+        Pix.start(this@MessageActivity, options)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+
+            val returnValue = data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+
+            if (chatId == null)
+                Toast.makeText(this, "Please send text message first", Toast.LENGTH_SHORT).show()
+            else {
+                Toast.makeText(this, "Called", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, SendMediaService::class.java)
+                intent.putExtra("hisID", hisId)
+                intent.putExtra("chatID", chatId)
+                intent.putStringArrayListExtra("media", returnValue)
+
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O)
+                    startForegroundService(intent)
+                else
+                    startService(intent)
+            }
+
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
+
+
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImage()
+                } else {
+                    Toast.makeText(
+                        this@MessageActivity,
+                        "Approve permissions to open Pix ImagePicker",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                return
+            }
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()

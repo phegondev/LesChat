@@ -4,7 +4,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.ViewDataBinding
@@ -16,6 +19,7 @@ import com.dennisiluma.leschat.databinding.LeftItemLayoutBinding
 import com.dennisiluma.leschat.databinding.RightItemLayoutBinding
 import com.dennisiluma.leschat.model.ChatListModel
 import com.dennisiluma.leschat.model.MessageModel
+import com.dennisiluma.leschat.model.UserModel
 import com.dennisiluma.leschat.permission.AppPermission
 import com.dennisiluma.leschat.util.AppUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -69,6 +73,7 @@ class MessageActivity : AppCompatActivity() {
         activityMessageBinding.hisImage = hisImage
 
         if (chatId == null) { //when we navigate here form chat adapter we don't know weather the user has a chat on ground already. If he does, we set the chaid to the chatId
+            checkOnlineStatus()
             hisId?.let { checkChat(it) } //here we are using the hisID to check if he has chat with the current user, if yes update the chatId which is currently null
         }
         activityMessageBinding.btnSend.setOnClickListener {
@@ -88,6 +93,23 @@ class MessageActivity : AppCompatActivity() {
                 sendMessage(message)
             }
         }
+
+        activityMessageBinding.msgText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().isEmpty())
+                    typingStatus("false")
+                else
+                    typingStatus(hisId!!)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
 
     }
 
@@ -246,11 +268,53 @@ class MessageActivity : AppCompatActivity() {
     class ViewHolder(var viewDataBinding: ViewDataBinding) :
         RecyclerView.ViewHolder(viewDataBinding.root)
 
+    private fun typingStatus(typing: String) {
+
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(myId)
+        val map = HashMap<String, Any>()
+        map["typing"] = typing
+        databaseReference.updateChildren(map)
+
+    }
+
+    private fun checkOnlineStatus() {
+
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(hisId!!)
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val userModel = snapshot.getValue(UserModel::class.java)
+                    activityMessageBinding.online = userModel?.online
+
+                    val typing = userModel?.typing
+
+                    if (typing == myId) {
+                        activityMessageBinding.lottieAnimation.visibility = View.VISIBLE
+                        activityMessageBinding.lottieAnimation.playAnimation()
+                    } else {
+                        activityMessageBinding.lottieAnimation.cancelAnimation()
+                        activityMessageBinding.lottieAnimation.visibility = View.GONE
+
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
     override fun onPause() {
         super.onPause()
         if (firebaseRecyclerAdapter != null)
             firebaseRecyclerAdapter!!.stopListening()
-        //appUtil.updateOnlineStatus("offline")
+        appUtil.updateOnlineStatus("offline")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUtil.updateOnlineStatus("online")
     }
 
     fun userInfo() {

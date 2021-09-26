@@ -59,10 +59,20 @@ class EditNameActivity : AppCompatActivity() {
 
         }
 
+
         return if (required) {
             view?.requestFocus()
             false
         } else true
 
+    }
+    override fun onPause() {
+        super.onPause()
+        appUtil.updateOnlineStatus("offline")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUtil.updateOnlineStatus("online")
     }
 }

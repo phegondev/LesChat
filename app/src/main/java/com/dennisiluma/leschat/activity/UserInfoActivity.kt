@@ -42,4 +42,13 @@ class UserInfoActivity : AppCompatActivity() {
             })
         }
     }
+    override fun onPause() {
+        super.onPause()
+        appUtil.updateOnlineStatus("offline")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUtil.updateOnlineStatus("online")
+    }
 }

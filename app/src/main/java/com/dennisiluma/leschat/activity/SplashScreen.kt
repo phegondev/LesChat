@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.databinding.adapters.ToolbarBindingAdapter
 import com.dennisiluma.leschat.R
 import com.dennisiluma.leschat.util.AppUtil
 import com.google.android.gms.tasks.OnCompleteListener
@@ -22,6 +23,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         firebaseAuth = FirebaseAuth.getInstance()
         appUtil = AppUtil()
+        this.supportActionBar?.hide();
 
         Handler(Looper.getMainLooper()).postDelayed({
 

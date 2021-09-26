@@ -92,7 +92,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
 
     // Image Picker
-    implementation 'com.fxn769:pix:1.5.4' //very nice library, check documentation
+    implementation 'com.fxn769:pix:1.5.4' //very nice library, enables you to snap,seleteand send images and video in messager check documentation
 
     // Image Compressor
     implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'

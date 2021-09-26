@@ -65,6 +65,9 @@ class MessageActivity : AppCompatActivity() {
             hisId = intent.getStringExtra("hisId")
             hisImage = intent.getStringExtra("hisImage")
         }
+
+        activityMessageBinding.hisImage = hisImage
+
         if (chatId == null) { //when we navigate here form chat adapter we don't know weather the user has a chat on ground already. If he does, we set the chaid to the chatId
             hisId?.let { checkChat(it) } //here we are using the hisID to check if he has chat with the current user, if yes update the chatId which is currently null
         }

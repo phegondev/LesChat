@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/activity_message.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_user_info.xml" value="0.2064814814814815" />
+        <entry key="app/src/main/res/layout/chat_item_layout.xml" value="0.18055555555555555" />
         <entry key="app/src/main/res/layout/contact_item_layout.xml" value="0.2064814814814815" />
         <entry key="app/src/main/res/layout/content_splash_screen.xml" value="10.0" />
         <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.2064814814814815" />

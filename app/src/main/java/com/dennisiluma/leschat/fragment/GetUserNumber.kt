@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.dennisiluma.leschat.R
 import com.dennisiluma.leschat.databinding.FragmentGetUserNumberBinding
+import com.dennisiluma.leschat.model.UserModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*

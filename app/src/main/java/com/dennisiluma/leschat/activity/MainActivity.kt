@@ -1,6 +1,5 @@
 package com.dennisiluma.leschat.activity
 
-import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     fun collectIncompleteSignedInSharedPreferences(): String? { //comming from verify_number fragment line 71
         val sharedPref = this.getSharedPreferences("registeredButNotFullyComplete", Context.MODE_PRIVATE)
+
         return  sharedPref.getString("registeredButNotFullyComplete", "registeredButNotFullyComplete")
+
     }
 }

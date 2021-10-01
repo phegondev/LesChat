@@ -27,17 +27,18 @@ class SplashScreen : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-
             if (firebaseAuth!!.currentUser == null) {
 
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
 
-            } else if (collectSignedInSharedPreferences() == "registeredProfileSuccessfully") {
+            }
+            else if (collectSignedInSharedPreferences() == "registeredProfileSuccessfully") {
                 startActivity(Intent(this, DashBoard::class.java))
                 finish()
 
-            } else {
+            }
+            else {
 
                 /*Every device has its own unique fcm token, here we are writting it*/
 //                FirebaseInstanceId.getInstance().instanceId

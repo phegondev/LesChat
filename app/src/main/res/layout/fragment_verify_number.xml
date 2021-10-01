@@ -52,7 +52,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:cursorVisible="true"
-        android:hint="236478"
         android:inputType="number"
         android:padding="5dp"
         android:textColor="@color/colorAccent"

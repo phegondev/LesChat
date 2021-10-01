@@ -30,7 +30,7 @@ class VerifyNumber : Fragment() {
         super.onCreate(savedInstanceState)
         /*Arguments coming from GetUserNumber*/
         arguments?.let {
-            code = it.getString("Code")
+            code = it.getString("code")
         }
     }
 
@@ -49,17 +49,17 @@ class VerifyNumber : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
         binding.btnVerify.setOnClickListener {
             if (checkPin()) {
-                if(code!! == pin){ // check weather to remove or not
+                //if(code == pin)){ // check weather to remove or not
                     val credential = PhoneAuthProvider.getCredential(code!!, pin)
                     signInUser(credential)
-                }
-                else Toast.makeText(context, "Your pin Doesn't match, Type in the correct values" , Toast.LENGTH_LONG).show()
+                //}
+                //else Toast.makeText(context, "Your pin Doesn't match, Type in the correct values" , Toast.LENGTH_LONG).show()
             }
         }
     }
 
     private fun checkPin(): Boolean {
-        pin = binding.otpTextView.text.toString()
+        pin = binding.otpTextView.text.toString().trim()
         if (pin.isEmpty()) {
             binding.otpTextView.error = "Filed is required"
             return false
@@ -78,6 +78,7 @@ class VerifyNumber : Fragment() {
                         firebaseAuth!!.currentUser!!.phoneNumber!!,
                         firebaseAuth!!.uid!!
                     )
+                Toast.makeText(context, "Succesfuly registered", Toast.LENGTH_SHORT).show()
 
                 databaseReference!!.child(firebaseAuth?.uid!!).setValue(userModel)
                 saveInSharePreferencesForIncompleteRegistration()
@@ -107,7 +108,7 @@ class VerifyNumber : Fragment() {
         fun newInstance(code: String) =
             VerifyNumber().apply {
                 arguments = Bundle().apply {
-                    putString("Code", code)
+                    putString("code", code)
                 }
             }
     }
